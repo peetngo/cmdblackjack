@@ -1,18 +1,44 @@
 # main functions of program will go in here
 import random
 
-# this function will check if the cards equals to 21
-# TODO: Why doesn't this work?
-def checkCards(hand):
-    print(hand)
-    for i in hand:
-        if (i == "J" or i == "K" or i == "Q"):
-            i = 10
-        if (i == "A"):
-            i = 11
 
-    if(hand[0] + hand[1] == 21):
-        print("you have won!")
+def welcome():
+    print("Welcome to BlackJack!")
+    print("Dealing your cards...")
+
+
+def hit(hand, cards):
+    dealCard = cards.pop()
+    if (dealCard == 11):
+        dealCard = "J"
+        hand.append(dealCard)
+    elif (dealCard == 12):
+        dealCard = "Q"
+        hand.append(dealCard)
+    elif (dealCard == 13):
+        dealCard = "K"
+        hand.append(dealCard)
+    elif (dealCard == 1):
+        dealCard = "A"
+        hand.append(dealCard)
+    else:
+        hand.append(dealCard)
+    return hand
+
+# this function will check cards
+def checkCards(hand):
+    num = 0
+    for card in hand:
+        if (card == "Q" or card == "J" or card == "K"):
+            num = num + 10
+        elif (card == "A"):
+            if (num > 11):
+                num = num + 1
+            else:
+                num = num + 11
+        else:
+            num = num + card
+    return num
 
 # this function will deal the cards
 def dealCards(cards):
@@ -34,9 +60,7 @@ def dealCards(cards):
             hand.append(dealCard)
         else:
             hand.append(dealCard)
-
     return(hand)
-
 
 # this is going to start the game
 def start():
@@ -48,11 +72,11 @@ def start():
     cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
     playerhand = dealCards(cards)
     cpuhand = dealCards(cards)
-    checkCards(playerhand)
-    print("Your cards: ", playerhand)
-    #print(cpuhand)
 
-    print("lets play some blackjack dog")
+    welcome()
+    print("Your cards: ", playerhand)
+    print("Your total: ", checkCards(playerhand))
+    print("your cards now: ", hit(playerhand, cards))
 
 
 if __name__ == "__main__":
