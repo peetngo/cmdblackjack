@@ -6,6 +6,19 @@ def welcome():
     print("Welcome to BlackJack!")
     print("Dealing your cards...")
 
+def eval(playerhand, cpuhand):
+    if checkCards(playerhand) > checkCards(cpuhand):
+        print("Your hand: ", playerhand)
+        print("Dealer hand: ", cpuhand)
+        print("You win!")
+    if checkCards(playerhand) < checkCards(cpuhand):
+        print("Your hand: ", playerhand)
+        print("Dealer hand: ", cpuhand)
+        print("You lose!")
+
+def dealer(cpuhand, cards):
+    if (checkCards(cpuhand) < 17):
+        hit(cpuhand, cards)
 
 def hit(hand, cards):
     dealCard = cards.pop()
@@ -25,6 +38,7 @@ def hit(hand, cards):
         hand.append(dealCard)
     return hand
 
+
 # this function will check cards
 def checkCards(hand):
     num = 0
@@ -40,6 +54,7 @@ def checkCards(hand):
             num = num + card
     return num
 
+
 # this function will deal the cards
 def dealCards(cards):
     hand = []
@@ -49,18 +64,19 @@ def dealCards(cards):
         if (dealCard == 11):
             dealCard = "J"
             hand.append(dealCard)
-        elif(dealCard == 12):
+        elif (dealCard == 12):
             dealCard = "Q"
             hand.append(dealCard)
-        elif(dealCard == 13):
+        elif (dealCard == 13):
             dealCard = "K"
             hand.append(dealCard)
-        elif(dealCard == 1):
+        elif (dealCard == 1):
             dealCard = "A"
             hand.append(dealCard)
         else:
             hand.append(dealCard)
-    return(hand)
+    return (hand)
+
 
 # this is going to start the game
 def start():
@@ -69,15 +85,28 @@ def start():
 
     # when you start the game define a deck of cards
     # TODO: this is not a full deck, make it a full deck with 52 cards
-    cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+    cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]* 4
     playerhand = dealCards(cards)
     cpuhand = dealCards(cards)
 
     welcome()
     print("Your cards: ", playerhand)
-    print("Your total: ", checkCards(playerhand))
-    print("your cards now: ", hit(playerhand, cards))
+    print("Dealer Hand:", "[", cpuhand[0], ",", "?", "]")
 
+    loop = 1
+    while(loop):
+        choice = input("Press h to hit or s to stay: ")
+        if (choice == "h" or choice == "H"):
+            hit(playerhand, cards)
+            print("Your cards: ", playerhand)
+            if (checkCards(playerhand) > 21):
+                print("Busted. Dealer wins.")
+                exit()
+        else:
+            loop = 0
+
+    dealer(cpuhand, cards)
+    eval(playerhand, cpuhand)
 
 if __name__ == "__main__":
-   start()
+    start()
